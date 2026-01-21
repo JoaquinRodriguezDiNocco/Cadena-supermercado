@@ -14,6 +14,10 @@ CREATE TABLE cliente(
     PRIMARY KEY (id_cliente)
 );
 
+ALTER TABLE cliente 
+ADD COLUMN ciudad VARCHAR(50) NOT NULL,
+ADD COLUMN provincia VARCHAR(50) NOT NULL;
+
 CREATE TABLE locales(
     id_local INT NOT NULL,
     codigo_postal VARCHAR(10) NOT NULL,
@@ -66,6 +70,7 @@ CREATE TABLE producto(
     FOREIGN KEY (id_subcategoria) REFERENCES subcategoria(id_subcategoria)
 );
 
+
 CREATE TABLE compra_cadena(
     id_orden INT NOT NULL,
     id_fabricante INT NOT NULL,
@@ -107,3 +112,18 @@ CREATE TABLE lista(
     FOREIGN KEY (id_transaccion) REFERENCES transaccion(id_transaccion),
     FOREIGN KEY (sku) REFERENCES producto(sku)
 );
+
+# NECESITO CAMBIAR EL TIPO DE DATO DE SKU DESDE INT A BIGINT
+SET FOREIGN_KEY_CHECKS = 0;
+
+
+ALTER TABLE producto MODIFY sku BIGINT;
+ALTER TABLE detalle MODIFY sku BIGINT;
+ALTER TABLE lista MODIFY sku BIGINT;
+
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+SELECT TABLE_NAME, COLUMN_TYPE 
+FROM information_schema.COLUMNS 
+WHERE COLUMN_NAME = 'sku' AND TABLE_SCHEMA = DATABASE();
