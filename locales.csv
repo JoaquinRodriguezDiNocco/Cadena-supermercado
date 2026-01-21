@@ -1,0 +1,61 @@
+id_local,codigo_postal,provincia,ciudad,direccion,metros_cuadrados
+1,J5400,San Juan,San Juan Capital,Rivadavia 695,476
+2,B1900,Buenos Aires,La Plata,Sarmiento 371,5396
+3,Z9400,Santa Cruz,Río Gallegos,Av. Roca 3798,497
+4,B1878,Buenos Aires,Quilmes,9 de Julio 1334,3108
+5,C1428,CABA,Belgrano,Av. Roca 2020,5425
+6,S2300,Santa Fe,Rafaela,Urquiza 2784,4277
+7,X5800,Córdoba,Río Cuarto,San Martín 3076,5261
+8,E3200,Entre Ríos,Concordia,España 2017,1619
+9,B1900,Buenos Aires,La Plata,España 4084,2416
+10,B1642,Buenos Aires,San Isidro,España 2236,4533
+11,B1824,Buenos Aires,Lanús,9 de Julio 1021,5427
+12,R8400,Río Negro,Bariloche,Mitre 4266,477
+13,B1884,Buenos Aires,Berazategui,Sarmiento 1241,4756
+14,C1428,CABA,Belgrano,Mitre 2149,4644
+15,H3500,Chaco,Resistencia,Rivadavia 2247,1090
+16,B1900,Buenos Aires,La Plata,Av. Colón 1069,5248
+17,B1824,Buenos Aires,Lanús,Av. Roca 1890,3249
+18,C1113,CABA,Recoleta,Urquiza 3311,5436
+19,B1642,Buenos Aires,San Isidro,Sarmiento 2704,2963
+20,K4700,Catamarca,Catamarca Capital,9 de Julio 1826,812
+21,S2000,Santa Fe,Rosario,San Martín 428,5291
+22,C1428,CABA,Belgrano,San Martín 1858,3578
+23,S3000,Santa Fe,Santa Fe Capital,Av. Colón 1039,4599
+24,P3600,Formosa,Formosa Capital,España 541,889
+25,E3100,Entre Ríos,Paraná,9 de Julio 4078,2062
+26,B1878,Buenos Aires,Quilmes,Av. Roca 2250,5054
+27,A4400,Salta,Salta Capital,Mitre 1795,1302
+28,X5900,Córdoba,Villa María,Sarmiento 1831,4029
+29,X5800,Córdoba,Río Cuarto,Av. Roca 1641,3679
+30,B1824,Buenos Aires,Lanús,San Martín 3934,3876
+31,S2300,Santa Fe,Rafaela,Urquiza 673,4871
+32,B1642,Buenos Aires,San Isidro,España 1358,3484
+33,Y4600,Jujuy,San Salvador de Jujuy,Av. Colón 654,1049
+34,B1642,Buenos Aires,San Isidro,Av. Colón 1531,2553
+35,N3380,Misiones,Eldorado,Belgrano 600,1357
+36,B1824,Buenos Aires,Lanús,Sarmiento 2762,3924
+37,S3000,Santa Fe,Santa Fe Capital,San Martín 3572,4596
+38,B8000,Buenos Aires,Bahía Blanca,San Martín 1376,4260
+39,A4530,Salta,Orán,San Martín 1289,1917
+40,J5400,San Juan,San Juan Capital,Rivadavia 2672,764
+41,B1824,Buenos Aires,Lanús,Belgrano 2130,2193
+42,B1824,Buenos Aires,Lanús,Mitre 2215,4977
+43,B1642,Buenos Aires,San Isidro,Av. Roca 4289,4346
+44,J5400,San Juan,San Juan Capital,Belgrano 1966,942
+45,B1824,Buenos Aires,Lanús,Sarmiento 3539,4627
+46,G4200,Santiago del Estero,Sgo. del Estero Capital,San Martín 2095,1146
+47,M5501,Mendoza,Godoy Cruz,España 1571,1091
+48,B7600,Buenos Aires,Mar del Plata,Av. Colón 1304,4993
+49,X5152,Córdoba,Carlos Paz,Rivadavia 1015,3983
+50,E3100,Entre Ríos,Paraná,Av. Colón 3696,1472
+51,B8000,Buenos Aires,Bahía Blanca,Av. Roca 260,2121
+52,M5600,Mendoza,San Rafael,Av. Roca 970,1729
+53,B8000,Buenos Aires,Bahía Blanca,Rivadavia 2752,4088
+54,S2600,Santa Fe,Venado Tuerto,Av. Colón 3420,3342
+55,X5900,Córdoba,Villa María,Urquiza 3378,2424
+56,Q8300,Neuquén,Neuquén Capital,Urquiza 2149,1077
+57,M5600,Mendoza,San Rafael,Urquiza 1290,1331
+58,H3700,Chaco,Pres. Roque Sáenz Peña,Rivadavia 1536,1517
+59,B1884,Buenos Aires,Berazategui,Belgrano 3218,4477
+60,M5501,Mendoza,Godoy Cruz,Rivadavia 3333,2448

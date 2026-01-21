@@ -1,0 +1,26 @@
+id_subcategoria,nombre_subcat,id_categoria
+1,Molido,1
+2,Grano,1
+3,Cápsula,1
+4,Soluble,1
+5,Yogur Griego,2
+6,Yogur Frutal,2
+7,Yogur Cremoso,2
+8,Yogur Líquido,2
+9,Oliva,3
+10,Girasol,3
+11,Mezcla,3
+12,Desodorante Masculino,4
+13,Desodorante Femenino,4
+14,Desodorante Unisex,4
+15,Detergente Líquido,5
+16,Detergente en Polvo,5
+17,Suavizante,5
+18,Dulce,6
+19,Salada,6
+20,Lasagna,7
+21,Niditos,7
+22,Spaghetti,7
+23,Fusilli,7
+24,Penne Rigate,7
+25,Tallarines,7
