@@ -1,0 +1,92 @@
+USE cadena_supermercado;
+SET GLOBAL local_infile = 1;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/clientes.csv'
+INTO TABLE cliente
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS
+(id_cliente, nombre, apellido, email, telefono, fecha_nac, sexo, provincia, ciudad);
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/locales.csv'
+INTO TABLE locales
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/fabricante.csv'
+INTO TABLE fabricante
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/categoria.csv'
+INTO TABLE categoria
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/subcategoria.csv'
+INTO TABLE subcategoria
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/marca.csv'
+INTO TABLE marca
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/producto.csv'
+INTO TABLE producto
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/compra_cadena.csv'
+INTO TABLE compra_cadena
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/transaccion.csv'
+INTO TABLE transaccion
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/detalle.csv'
+INTO TABLE detalle
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'C:/Users/HP/Desktop/data sql/lista.csv'
+INTO TABLE lista
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
