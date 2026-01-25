@@ -1,0 +1,114 @@
+USE cadena_supermercado;
+
+
+CREATE VIEW view_metrica_por_provincia AS
+SELECT
+c.provincia,
+# CANTIDAD DE SKUS DIFERENTES VENDIDOS POR PROVINCIA
+COUNT(DISTINCT l.sku) AS skus_diferentes_por_provincia,
+#TOTAL DE TICKETS POR PROVINCIA (PDV U ONLINE)
+COUNT(DISTINCT t.id_transaccion) AS numero_tickets_por_provincia,
+# GASTO PROMEDIO DEL CLIENTE POR PROVINCIA
+(SUM(l.importe)/COUNT(DISTINCT t.id_cliente)) AS gato_promedio_por_cliente_provincia,
+#TICKET PROMEDIO POR PROVINCIA
+(SUM(l.importe)/COUNT(DISTINCT t.id_transaccion)) AS ticket_promedio_por_provincia,
+#FRECUENCIA DE COMPRA EN EL AÑO 
+(COUNT(DISTINCT t.id_transaccion)/COUNT(DISTINCT t.id_cliente)) AS frecuencia_compra_por_provincia
+FROM cliente AS c RIGHT JOIN transaccion AS t ON c.id_cliente = t.id_cliente
+LEFT JOIN lista AS l ON t.id_transaccion = l.id_transaccion
+WHERE t.fecha_compra BETWEEN "2025-01-01" AND "2025-12-31"
+GROUP BY c.provincia
+ORDER BY skus_diferentes_por_provincia DESC;
+
+
+CREATE VIEW view_eficiencia_local AS
+SELECT
+	loc.id_local,
+	loc.provincia,
+    loc.ciudad,
+    loc.direccion,
+SUM(l.importe) AS total_facturacion,
+(SUM(l.importe)/loc.metros_cuadrados) AS facturacion_por_metro2
+FROM locales AS loc INNER JOIN transaccion AS t ON loc.id_local = t.id_local
+INNER JOIN lista AS l ON t.id_transaccion = l.id_transaccion
+WHERE t.fecha_compra BETWEEN "2025-01-01" AND "2025-12-31" AND t.canal_venta = "presencial"
+GROUP BY loc.id_local, loc.provincia, loc.ciudad, loc.direccion
+ORDER BY facturacion_por_metro2 DESC;
+
+CREATE VIEW view_detalle_categorias_local AS
+SELECT
+	loc.id_local,
+    loc.provincia,
+    cat.nombre_cat,
+    SUM(l.unidades) AS unidades_vendidas,
+    COUNT(DISTINCT t.id_cliente) AS clientes_por_local,
+    (SUM(l.unidades)/COUNT(DISTINCT t.id_cliente)) AS consumo_promedio,
+    SUM(SUM(l.unidades)) OVER(PARTITION BY loc.id_local) AS unidades_tot_por_local,
+    CONCAT(ROUND((SUM(l.unidades)/SUM(SUM(l.unidades)) OVER(PARTITION BY loc.id_local))*100, 2), "%") AS porcentaje_cate_local
+FROM locales AS loc INNER JOIN transaccion AS t ON loc.id_local = t.id_local
+INNER JOIN lista AS l ON t.id_transaccion = l.id_transaccion
+INNER JOIN producto AS p ON l.sku = p.sku
+INNER JOIN subcategoria AS s ON p.id_subcategoria = s.id_subcategoria
+INNER JOIN categoria AS cat ON s.id_categoria = cat.id_categoria
+WHERE t.fecha_compra BETWEEN "2025-01-01" AND "2025-12-31"
+GROUP BY loc.id_local, loc.provincia, cat.nombre_cat
+ORDER BY loc.id_local ASC;
+
+
+CREATE VIEW view_demografia AS
+SELECT
+	CASE WHEN c.fecha_nac BETWEEN "1941-02-10" AND "1945-12-31" THEN "1. Sin_clasificar"
+	WHEN c.fecha_nac BETWEEN "1946-01-01" AND "1964-12-31" THEN "2. Baby Boomers"
+	WHEN c.fecha_nac BETWEEN "1965-01-01" AND "1980-12-31" THEN "3. Generacion X"
+    WHEN c.fecha_nac BETWEEN "1981-01-01" AND "1996-12-31" THEN "4. Millennials"
+    ELSE "5. Generacion Z"
+    END AS Generaciones,
+t.canal_venta,
+COUNT(DISTINCT c.id_cliente) AS cantidad_clientes_por_generacion,
+CONCAT(ROUND(COUNT(DISTINCT c.id_cliente) * 100/ SUM(COUNT(DISTINCT c.id_cliente)) OVER(PARTITION BY CASE 
+	WHEN c.fecha_nac BETWEEN "1941-02-10" AND "1945-12-31" THEN "1. Sin_clasificar"
+	WHEN c.fecha_nac BETWEEN "1946-01-01" AND "1964-12-31" THEN "2. Baby Boomers"
+	WHEN c.fecha_nac BETWEEN "1965-01-01" AND "1980-12-31" THEN "3. Generacion X"
+	WHEN c.fecha_nac BETWEEN "1981-01-01" AND "1996-12-31" THEN "4. Millennials"
+	ELSE "5. Generacion Z"
+	END), 2), ' %') AS porcentaje_por_generacion
+FROM cliente AS c INNER JOIN transaccion AS t ON c.id_cliente = t.id_cliente
+WHERE t.fecha_compra BETWEEN "2025-01-01" AND "2025-12-31"
+GROUP BY t.canal_venta, Generaciones
+ORDER BY Generaciones ASC;
+
+
+CREATE VIEW view_margen_beneficio_prov_loc AS
+SELECT
+	loc.id_local,
+    cat.nombre_cat,
+SUM(l.importe)/SUM(l.unidades) AS precio_unitario_venta,
+(SUM(d.importe_c)/SUM(d.unidades_c)) AS costo_unitario_compra,
+CONCAT(ROUND(((SUM(l.importe)/SUM(l.unidades) - SUM(d.importe_c)/SUM(d.unidades_c)) / (SUM(l.importe)/SUM(l.unidades)) * 100), 2), '%') AS margen_beneficio
+FROM locales AS loc INNER JOIN transaccion AS t ON loc.id_local = t.id_local
+INNER JOIN lista AS l ON t.id_transaccion = l.id_transaccion
+INNER JOIN producto AS p ON l.sku = p.sku
+INNER JOIN subcategoria AS s ON p.id_subcategoria = s.id_subcategoria
+INNER JOIN categoria AS cat ON s.id_categoria = cat.id_categoria
+INNER JOIN detalle AS d ON p.sku = d.sku
+WHERE loc.provincia = "Buenos Aires"
+GROUP BY loc.id_local, cat.nombre_cat
+ORDER BY margen_beneficio DESC;
+
+
+CREATE VIEW view_margen_beneficio_prov AS
+SELECT
+	loc.provincia,
+    cat.nombre_cat,
+SUM(l.importe)/SUM(l.unidades) AS precio_unitario_venta,
+(SUM(d.importe_c)/SUM(d.unidades_c)) AS costo_unitario_compra,
+CONCAT(ROUND(((SUM(l.importe)/SUM(l.unidades) - SUM(d.importe_c)/SUM(d.unidades_c)) / (SUM(l.importe)/SUM(l.unidades)) * 100), 2), '%') AS margen_beneficio
+FROM locales AS loc INNER JOIN transaccion AS t ON loc.id_local = t.id_local
+INNER JOIN lista AS l ON t.id_transaccion = l.id_transaccion
+INNER JOIN producto AS p ON l.sku = p.sku
+INNER JOIN subcategoria AS s ON p.id_subcategoria = s.id_subcategoria
+INNER JOIN categoria AS cat ON s.id_categoria = cat.id_categoria
+INNER JOIN detalle AS d ON p.sku = d.sku
+WHERE loc.provincia = "Buenos Aires"
+GROUP BY loc.provincia, cat.nombre_cat
+ORDER BY margen_beneficio DESC;
