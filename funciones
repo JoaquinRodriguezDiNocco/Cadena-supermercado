@@ -1,0 +1,98 @@
+USE cadena_supermercado;
+
+
+
+
+# PRIMER FUNCIÓN
+
+DROP FUNCTION IF EXISTS price_index;
+
+DELIMITER $$
+
+CREATE FUNCTION price_index (p_sku BIGINT)
+RETURNS DECIMAL(10, 2)
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+DECLARE sku_id_categoria INT;
+DECLARE precio_promedio_categoria DECIMAL(10, 2);
+DECLARE sku_precio DECIMAL(10, 2);
+DECLARE indice DECIMAL(10, 2);
+
+SELECT
+	s.id_categoria INTO sku_id_categoria
+FROM producto AS p INNER JOIN subcategoria AS s ON p.id_subcategoria = s.id_subcategoria
+WHERE p.sku = p_sku;
+
+SELECT
+	AVG(l.importe / l.unidades) INTO precio_promedio_categoria
+FROM lista AS l INNER JOIN producto AS p ON l.sku = p.sku
+INNER JOIN subcategoria AS s on p.id_subcategoria = s.id_subcategoria
+WHERE s.id_categoria = sku_id_categoria;
+
+SELECT
+	AVG(l.importe / l.unidades) INTO sku_precio
+FROM lista AS l
+WHERE l.sku = sku;
+
+SET indice = (sku_precio / precio_promedio_categoria) * 100;
+
+RETURN indice;
+END$$
+
+DELIMITER ;
+
+SELECT
+	p.sku,
+    p.descriptor,
+    c.nombre_cat,
+    s.nombre_subcat,
+    price_index (p.sku) AS price_index
+FROM producto AS p INNER JOIN subcategoria AS s ON p.id_subcategoria = s.id_subcategoria
+INNER JOIN categoria AS c ON s.id_categoria = c.id_categoria
+LIMIT 50;
+
+
+
+
+# SEGUNDA FUNCIÓN
+
+DROP FUNCTION IF EXISTS consumo_edad;
+
+DELIMITER $$
+
+CREATE FUNCTION consumo_edad (p_id_subcategoria INT)
+RETURNS VARCHAR(50)
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE v_generacion_dominante VARCHAR(50);
+
+    SELECT 
+        CASE 
+            WHEN c.fecha_nac BETWEEN '1941-02-10' AND '1945-12-31' THEN '1. Sin_clasificar'
+            WHEN c.fecha_nac BETWEEN '1946-01-01' AND '1964-12-31' THEN '2. Baby Boomers'
+            WHEN c.fecha_nac BETWEEN '1965-01-01' AND '1980-12-31' THEN '3. Generacion X'
+            WHEN c.fecha_nac BETWEEN '1981-01-01' AND '1996-12-31' THEN '4. Millennials'
+            ELSE '5. Generacion Z'
+        END AS generacion
+    INTO v_generacion_dominante
+    FROM lista AS l INNER JOIN transaccion AS t ON l.id_transaccion = t.id_transaccion
+    INNER JOIN cliente AS c ON t.id_cliente = c.id_cliente
+    INNER JOIN producto AS p ON l.sku = p.sku
+    WHERE p.id_subcategoria = p_id_subcategoria
+    GROUP BY generacion
+    ORDER BY COUNT(*) DESC
+    LIMIT 1;
+
+   
+    RETURN IFNULL(v_generacion_dominante, 'Sin ventas registradas');
+END$$
+
+DELIMITER ;
+
+SELECT 
+    id_subcategoria, 
+    nombre_subcat, 
+    consumo_edad(id_subcategoria) AS segmento_lider
+FROM subcategoria;
