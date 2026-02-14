@@ -1,0 +1,49 @@
+USE cadena_supermercado;
+
+# PROCEDURE 1
+
+DELIMITER //
+
+CREATE PROCEDURE sp_reporte_ventas_local(
+    IN p_id_local INT,
+    IN p_fecha_inicio DATE,
+    IN p_fecha_fin DATE
+)
+BEGIN
+    SELECT 
+        l.id_local,
+        l.direccion,
+        SUM(li.importe) AS total_vendido,
+        COUNT(DISTINCT t.id_transaccion) AS cantidad_tickets
+    FROM locales AS l
+    JOIN transaccion AS t ON l.id_local = t.id_local
+    JOIN lista AS li ON t.id_transaccion = li.id_transaccion
+    WHERE l.id_local = p_id_local 
+      AND t.fecha_compra BETWEEN p_fecha_inicio AND p_fecha_fin
+    GROUP BY l.id_local;
+END //
+
+DELIMITER ;
+
+# PROCEDURE 2
+
+DELIMITER //
+
+CREATE PROCEDURE sp_historial_cliente(IN p_id_cliente INT)
+BEGIN
+    SELECT 
+        t.fecha_compra,
+        p.descriptor AS producto,
+        li.unidades,
+        li.importe
+    FROM transaccion t
+    JOIN lista AS li ON t.id_transaccion = li.id_transaccion
+    JOIN producto AS p ON li.sku = p.sku
+    WHERE t.id_cliente = p_id_cliente
+    ORDER BY t.fecha_compra DESC;
+END //
+
+DELIMITER ;
+
+
+CALL sp_historial_cliente(5);
