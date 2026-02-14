@@ -1,0 +1,38 @@
+USE cadena_supermercado;
+
+# TRIGGER 1 PARA EVITAR QUE SE INSERTEN PRECIOS NEGATIVOS
+
+DELIMITER //
+
+CREATE TRIGGER tg_validar_precio_venta_positivo
+BEFORE INSERT ON lista
+FOR EACH ROW
+BEGIN
+    IF NEW.importe < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: El importe de la venta no puede ser negativo.';
+    END IF;
+END //
+
+DELIMITER ;
+
+# TRIGGER 2 PARA VALIDAR ACTUALIZACIONES
+
+DELIMITER //
+
+CREATE TRIGGER tg_validar_precio_venta_update
+BEFORE UPDATE ON lista
+FOR EACH ROW
+BEGIN
+    IF NEW.importe < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: No se puede actualizar a un importe negativo.';
+    END IF;
+END //
+
+DELIMITER ;
+
+
+
+
+
